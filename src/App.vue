@@ -1,29 +1,73 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div id="app" :class="`${$pref}container`">
+
+    <header>
+      <h1>Simple (test) project with asynchronous loading modules</h1>
+
+      <p>
+        <router-link to="/calculator">Fraction calculator</router-link>&nbsp;|&nbsp;
+        <router-link to="/comments">WebSocket communication</router-link>
+      </p>
+
+      <loading-indicator
+        :progress="componentLoading"/>
+    </header>
+
+    <section>
+      <keep-alive>
+        <router-view/>
+      </keep-alive>
+    </section>
+
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+import LoadingIndicator from '@/components/LoadingIndicator';
+
+export default {
+  name: 'App',
+
+  components: {
+    LoadingIndicator
+  },
+
+  data () {
+    return {
+      componentLoading: true
+    };
+  },
+
+  created: function() {
+    this.$router.beforeEach((to, from, next) => {
+      this.componentLoading = true;
+      next();
+    });
+
+    this.$router.afterEach(() => {
+      this.componentLoading = false;
+    });
   }
+};
+</script>
+
+<style lang="less">
+.@{pref}container {
+  &, 
+  * {
+    box-sizing: border-box;
+  }
+
+  position    : relative;
+  max-width   : 1200px;
+  margin      : 0 auto;
+  padding     : 0 20px;
+
+  > header {
+    padding   : 20px 0 0;
+    margin    : 0 0 10px 0;
+  }
+
+  // > section { }
 }
 </style>
