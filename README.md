@@ -1,6 +1,6 @@
 # vuejsSkillsTest_async
 
-Test project to demonstrate development skills using vue .js.
+Test project to demonstrate development skills using vue.js.
 
 ### General requirements
 
